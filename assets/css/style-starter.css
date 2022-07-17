@@ -19158,7 +19158,7 @@ h3.title-style {
   display: grid;
   align-items: center;
   min-height: 100vh;
-  background: url(../images/ajmal cover.png) no-repeat center;
+  background: url(assets/images/ajmal cover.png) no-repeat center;
   -ms-background-size: cover;
   background-size: cover;
   position: relative;
