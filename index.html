@@ -645,22 +645,52 @@
 
 
 <script>
+    function doGet(e) {
+  return handleRequest(e);
+}
+
+function doPost(e) {
+  return handleRequest(e);
+}
+
+function handleRequest(e) {
+  var lock = LockService.getScriptLock();
+  lock.waitLock(30000);
+  
+  try {
+    // Your code here
+    var result = "Success";
+    
+    var headers = {
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "POST, GET, OPTIONS",
+      "Access-Control-Allow-Headers": "Content-Type, Authorization"
+    };
+    
+    return ContentService.createTextOutput(JSON.stringify({ "result": result })).setHeaders(headers);
+  } catch (e) {
+    // Handle exceptions
+  } finally {
+    lock.releaseLock();
+  }
+}
     $("#submit-form").submit((e)=>{
         e.preventDefault()
         $.ajax({
-            url:"https://script.google.com/macros/s/AKfycbyb5cmV30kGDlQ_i4TTq3osTyBPeS3vlklJgWiFb42IywsBCbb-UktRfioobYStpANaGw/exec",
-            data:$("#submit-form").serialize(),
-            method:"post",
-            success:function (response){
-                alert("Form submitted successfully")
-                window.location.reload()
-                //window.location.href="https://google.com"
-            },
-            error:function (err){
-                alert("Something Error")
-
-            }
-        })
+  type: "POST",
+  url: "https://script.google.com/macros/s/AKfycbyb5cmV30kGDlQ_i4TTq3osTyBPeS3vlklJgWiFb42IywsBCbb-UktRfioobYStpANaGw/exec",
+  contentType: "application/json",
+  data: JSON.stringify($("#submit-form").serializeArray()),
+  dataType: "json",
+  success: function(response) {
+    console.log("Success:", response);
+    alert("Form submitted successfully");
+  },
+  error: function(xhr, status, error) {
+    console.error("Error:", xhr.responseText);
+    alert("Something Error");
+  }
+});
     })
 </script>
 </body>
