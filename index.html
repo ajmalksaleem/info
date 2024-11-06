@@ -645,12 +645,24 @@
 
 
 <script>
+    
     function doGet(e) {
   return handleRequest(e);
 }
 
 function doPost(e) {
   return handleRequest(e);
+}
+
+function doOptions(e) {
+  var headers = {
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Methods": "POST, GET, OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type, Authorization",
+    "Access-Control-Max-Age": 3600 // Optional; for caching
+  };
+  
+  return ContentService.createTextOutput("").setHeaders(headers);
 }
 
 function handleRequest(e) {
@@ -674,11 +686,13 @@ function handleRequest(e) {
     lock.releaseLock();
   }
 }
+
+    ///////////////
     $("#submit-form").submit((e)=>{
         e.preventDefault()
         $.ajax({
   type: "POST",
-  url: "https://script.google.com/macros/s/AKfycbyb5cmV30kGDlQ_i4TTq3osTyBPeS3vlklJgWiFb42IywsBCbb-UktRfioobYStpANaGw/exec",
+  url: "https://script.google.com/macros/s/AKfycbwOb4u5h_UzvkSOZumeI2TzmnPmjZNFBq1W-VYjDMFHnhJDB7IZI0Sd7sdA3coL6xIn0g/exec",
   contentType: "application/json",
   data: JSON.stringify($("#submit-form").serializeArray()),
   dataType: "json",
