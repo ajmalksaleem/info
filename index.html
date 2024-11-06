@@ -654,17 +654,6 @@ function doPost(e) {
   return handleRequest(e);
 }
 
-function doOptions(e) {
-  var headers = {
-    "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Methods": "POST, GET, OPTIONS",
-    "Access-Control-Allow-Headers": "Content-Type, Authorization",
-    "Access-Control-Max-Age": 3600 // Optional; for caching
-  };
-  
-  return ContentService.createTextOutput("").setHeaders(headers);
-}
-
 function handleRequest(e) {
   var lock = LockService.getScriptLock();
   lock.waitLock(30000);
@@ -689,23 +678,22 @@ function handleRequest(e) {
 
     ///////////////
     $("#submit-form").submit((e)=>{
-        e.preventDefault()
-        $.ajax({
-  type: "POST",
-  url: "https://script.google.com/macros/s/AKfycbwOb4u5h_UzvkSOZumeI2TzmnPmjZNFBq1W-VYjDMFHnhJDB7IZI0Sd7sdA3coL6xIn0g/exec",
-  contentType: "application/json",
-  data: JSON.stringify($("#submit-form").serializeArray()),
-  dataType: "json",
-  success: function(response) {
-    console.log("Success:", response);
-    alert("Form submitted successfully");
-  },
-  error: function(xhr, status, error) {
-    console.error("Error:", xhr.responseText);
-    alert("Something Error");
-  }
-});
-    })
+            e.preventDefault()
+            $.ajax({
+                url:"https://script.google.com/macros/s/AKfycbwOb4u5h_UzvkSOZumeI2TzmnPmjZNFBq1W-VYjDMFHnhJDB7IZI0Sd7sdA3coL6xIn0g/exec",
+                data:$("#submit-form").serialize(),
+                method:"post",
+                success:function (response){
+                    alert("Form submitted successfully")
+                    window.location.reload()
+                    //window.location.href="https://google.com"
+                },
+                error:function (err){
+                    alert("Something Error")
+    
+                }
+            })
+        })
 </script>
 </body>
 
