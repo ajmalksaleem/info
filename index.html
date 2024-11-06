@@ -459,7 +459,7 @@
                         <textarea name="Type your message here" id="w3lMessage" placeholder="Type your message here*"
                             required=""></textarea>
                     </div>
-                    <button class="btn btn-style">Send Message</button>
+                    <button id="submitbtn" class="btn btn-style">Send Message</button>
                 </form>
             </div>
         </div>
@@ -679,6 +679,8 @@ function handleRequest(e) {
     ///////////////
     $("#submit-form").submit((e)=>{
             e.preventDefault()
+            const submitButton = $("#submitbtn");
+            submitButton.prop("disabled", true).text("Submitting...");
             $.ajax({
                 url:"https://script.google.com/macros/s/AKfycbwOb4u5h_UzvkSOZumeI2TzmnPmjZNFBq1W-VYjDMFHnhJDB7IZI0Sd7sdA3coL6xIn0g/exec",
                 data:$("#submit-form").serialize(),
@@ -691,7 +693,10 @@ function handleRequest(e) {
                 error:function (err){
                     alert("Something Error")
     
-                }
+                },
+                complete: function() {
+            submitButton.prop("disabled", false).text("Send Message"); // Re-enable and reset text after submission
+        }
             })
         })
 </script>
